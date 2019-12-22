@@ -1,0 +1,25 @@
+{
+  "name": "vrtetris",
+  "version": "1.0.0",
+  "description": "Tetris Game Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bb2002/tetris-nodejs.git"
+  },
+  "keywords": [
+    "Tetris"
+  ],
+  "author": "Saint software",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bb2002/tetris-nodejs/issues"
+  },
+  "homepage": "https://github.com/bb2002/tetris-nodejs#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
