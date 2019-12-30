@@ -9,7 +9,8 @@ const shortid = require("shortid")
 const PORT = 9902
 
 //#region db setting
-const adapter = new FileSync("db.json")
+
+const adapter = new FileSync("db/db.json")
 const db = low(adapter)
 
 db.defaults({
@@ -51,7 +52,7 @@ app.get("/top_ranking",(req,res)=>{
 //#region API GET route
 
 app.get("/api/v1/my_ranking", (req, res) => {
-    const reqName = req.query.name
+    const reqScore = req.query.score
     const results = db.get("user")
                         .sortBy("score")
                         .value()
@@ -59,11 +60,11 @@ app.get("/api/v1/my_ranking", (req, res) => {
     let ranking
     
     sortResults.forEach((result, index) => {
-        if(result.name === reqName){
-            ranking = index+1
+        if(result.score == reqScore){
+            ranking = index + 1
         }
-    });
-    if(ranking>5){
+    })
+    if(ranking>99999){
         return -1
     }else{
         res.json({
@@ -78,8 +79,18 @@ app.get("/api/v1/top_ranking", (req, res) => {
                         .value()
     
     const sortResults = results.reverse()
+    let resultObj = {
+        ranking :[]
+    }
 
-    res.status(200).json(sortResults.slice(0,1000))
+    sortResults.forEach((result, index) => {
+        result.ranking = index + 1
+        resultObj.ranking[index] = result
+    })
+    
+    resultObj.ranking = resultObj.ranking.slice(0,1000)
+    
+    res.status(200).json(resultObj)
 })
 
 //#endregion
@@ -88,21 +99,15 @@ app.get("/api/v1/top_ranking", (req, res) => {
 //#region API POST route
 
 app.post("/api/v1/my_ranking", (req, res) => {
-    const reqName = req.body.name
-    const reqScore = req.body.score
-    if(db.get("user").find({name: reqName}).value()){
-        db.get("user")
-            .find({name: reqName})
-            .assign({score: reqScore})
-            .write()
-    }else{
-        db.get("user")
-            .push({
-                name: reqName,
-                score: reqScore
-            })
-            .write()
-    }
+    const reqName = req.body.Name
+    const reqScore = req.body.Score
+    db.get("user")
+        .push({
+            id: shortid.generate(),
+            name: reqName,
+            score: reqScore
+        })
+        .write()
     res.status(200).send()
 })
 
