@@ -27,7 +27,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: false
 }))
-app.use(express.static("public"))
+app.use('/static', express.static(path.join(__dirname, "../public")))
 
 //#endregion
 
@@ -36,14 +36,6 @@ app.use(express.static("public"))
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/html/index.html"))
-})
-
-app.get("/my_ranking", (req,res)=>{
-    res.sendFile(path.join(__dirname, "../public/html/my_ranking.html"))
-})
-
-app.get("/top_ranking",(req,res)=>{
-    res.sendFile(path.join(__dirname, "../public/html/top_ranking.html"))
 })
 
 //#endregion
@@ -84,7 +76,7 @@ app.get("/api/v1/top_ranking", (req, res) => {
     }
 
     sortResults.forEach((result, index) => {
-        result.ranking = index + 1
+        result.rank = index + 1
         resultObj.ranking[index] = result
     })
     
