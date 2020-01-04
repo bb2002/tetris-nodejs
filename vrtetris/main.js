@@ -10,7 +10,7 @@ const PORT = 9902
 
 //#region db setting
 
-const adapter = new FileSync("db/db.json")
+const adapter = new FileSync(__dirname+"/db/db.json")
 const db = low(adapter)
 
 db.defaults({
